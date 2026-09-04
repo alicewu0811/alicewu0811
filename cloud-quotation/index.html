@@ -434,52 +434,40 @@ function downloadQuote(){
   else if(n > 5) scale = 0.85;
   else if(n > 3) scale = 0.92;
 
-  var paperHtml = buildQuoteHTML(data, false);
+  showStatus('正在產生 PDF，請稍候⋯','');
 
   var container = document.createElement('div');
   container.className = 'pdf-root';
-  container.style.position = 'fixed';
-  container.style.left = '0';
-  container.style.top = '0';
   container.style.width = '680px';
   container.style.background = '#fff';
   container.style.color = '#1C2833';
-  container.style.zIndex = '-9999';
-  container.style.opacity = '0';
-  container.innerHTML = buildPdfStyles(scale) + paperHtml;
-  document.body.appendChild(container);
-
+  container.style.fontFamily = "'Noto Sans TC', sans-serif";
+  container.style.lineHeight = '1.6';
+  container.innerHTML = buildPdfStyles(scale) + buildQuoteHTML(data, false);
   var paper = container.querySelector('.paper');
   if(paper){
     paper.style.border = 'none';
     paper.style.boxShadow = 'none';
     paper.style.background = '#fff';
     paper.style.color = '#1C2833';
+    paper.style.maxWidth = '680px';
   }
+  document.body.appendChild(container);
 
-  showStatus('正在產生 PDF，請稍候⋯','');
-
-  setTimeout(function(){
-    html2pdf().set({
-      margin: [8,10,8,10],
-      filename: filename,
-      image: {type:'jpeg',quality:0.98},
-      html2canvas: {scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,
-        onclone: function(clonedDoc){
-          var el = clonedDoc.querySelector('.pdf-root');
-          if(el){ el.style.opacity = '1'; el.style.position = 'static'; el.style.zIndex = 'auto'; }
-        }
-      },
-      jsPDF: {unit:'mm',format:'a4',orientation:'portrait'},
-      pagebreak: {mode:['avoid-all']}
-    }).from(container).save().then(function(){
-      document.body.removeChild(container);
-      showStatus('PDF 報價單已下載',true);
-    }).catch(function(err){
-      document.body.removeChild(container);
-      showStatus('PDF 產生失敗：'+err.message,'');
-    });
-  }, 100);
+  html2pdf().set({
+    margin: [8,10,8,10],
+    filename: filename,
+    image: {type:'jpeg',quality:0.98},
+    html2canvas: {scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,scrollY:0,windowWidth:720},
+    jsPDF: {unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak: {mode:['avoid-all']}
+  }).from(container).save().then(function(){
+    document.body.removeChild(container);
+    showStatus('PDF 報價單已下載',true);
+  }).catch(function(err){
+    if(container.parentNode) document.body.removeChild(container);
+    showStatus('PDF 產生失敗：'+err.message,'');
+  });
 }
 
 function showAsanaModal(){
