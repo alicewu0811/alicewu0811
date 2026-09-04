@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Insight 雲端報價系統</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #F0F2F5;
+  --surface: #FFFFFF;
+  --primary: #1B4F72;
+  --primary-hover: #154360;
+  --accent: #C8860A;
+  --accent-hover: #A06E08;
+  --text: #1C2833;
+  --text-sec: #5D6D7E;
+  --border: #D5DBDB;
+  --border-lt: #EBF0F0;
+  --input-bg: #FFFFFF;
+  --highlight-row: #FDF6E3;
+  --success: #1E8449;
+  --error: #C0392B;
+  --shadow: 0 1px 3px rgba(27,79,114,.08);
+  --paper: #FFFFFF;
+  --paper-text: #1C2833;
+  --paper-border: #BDC3C7;
+  --tag-bg: #EBF5FB;
+  --tag-text: #1B4F72;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#15181E;--surface:#1E2228;--primary:#5DADE2;--primary-hover:#85C1E9;
+  --accent:#E8B828;--accent-hover:#D4A017;--text:#DEE2E6;--text-sec:#99A3AD;
+  --border:#33383F;--border-lt:#282D34;--input-bg:#252A31;
+  --highlight-row:#2E2A1A;--success:#2ECC71;--error:#E74C3C;
+  --shadow:0 1px 3px rgba(0,0,0,.25);--paper:#252A31;--paper-text:#DEE2E6;
+  --paper-border:#3D4148;--tag-bg:#1A2F3D;--tag-text:#5DADE2;
+}}
+:root[data-theme="dark"]{
+  --bg:#15181E;--surface:#1E2228;--primary:#5DADE2;--primary-hover:#85C1E9;
+  --accent:#E8B828;--accent-hover:#D4A017;--text:#DEE2E6;--text-sec:#99A3AD;
+  --border:#33383F;--border-lt:#282D34;--input-bg:#252A31;
+  --highlight-row:#2E2A1A;--success:#2ECC71;--error:#E74C3C;
+  --shadow:0 1px 3px rgba(0,0,0,.25);--paper:#252A31;--paper-text:#DEE2E6;
+  --paper-border:#3D4148;--tag-bg:#1A2F3D;--tag-text:#5DADE2;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',system-ui,sans-serif;margin:0;line-height:1.5}
+
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:12px}
+.app-header h1{font-size:18px;font-weight:700;color:var(--primary);margin:0}
+.app-header .badge{font-size:11px;font-weight:600;background:var(--tag-bg);color:var(--tag-text);padding:2px 8px;border-radius:10px}
+
+.layout{display:grid;grid-template-columns:420px 1fr;gap:0;min-height:calc(100vh - 53px)}
+@media(max-width:900px){.layout{grid-template-columns:1fr;grid-template-rows:auto auto}}
+
+.form-panel{background:var(--surface);border-right:1px solid var(--border);padding:20px 24px;overflow-y:auto;max-height:calc(100vh - 53px)}
+@media(max-width:900px){.form-panel{max-height:none;border-right:none;border-bottom:1px solid var(--border)}}
+
+.preview-panel{padding:24px;overflow-y:auto;max-height:calc(100vh - 53px);display:flex;flex-direction:column;align-items:center}
+@media(max-width:900px){.preview-panel{max-height:none}}
+
+fieldset{border:none;padding:0;margin:0 0 16px}
+legend{font-size:13px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:block}
+label{display:block;font-size:13px;font-weight:500;color:var(--text-sec);margin-bottom:3px}
+input,select,textarea{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;background:var(--input-bg);color:var(--text);font-family:inherit;font-size:13px;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{resize:vertical;min-height:56px}
+select{cursor:pointer}
+
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+
+.item-card{background:var(--bg);border:1px solid var(--border-lt);border-radius:6px;padding:10px 12px;margin-bottom:8px;position:relative}
+.item-card .item-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.item-card .item-num{font-size:11px;font-weight:700;color:var(--primary);background:var(--tag-bg);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.item-card .item-name-select{flex:1}
+.item-card .remove-btn{background:none;border:none;color:var(--error);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:3px;flex-shrink:0}
+.item-card .remove-btn:hover{background:rgba(192,57,43,.1)}
+.item-card .item-fields{display:grid;grid-template-columns:1fr 60px 1fr;gap:6px;align-items:end}
+.item-card .highlight-check{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:12px;color:var(--text-sec)}
+.item-card .highlight-check input{width:auto}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border:none;border-radius:5px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-hover)}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{background:var(--bg)}
+.btn-sm{padding:5px 10px;font-size:12px}
+
+.add-item-btn{width:100%;margin-bottom:16px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;padding-top:16px;border-top:1px solid var(--border-lt)}
+
+.status{font-size:12px;padding:6px 10px;border-radius:5px;margin-top:8px}
+.status.ok{background:rgba(30,132,73,.1);color:var(--success)}
+.status.err{background:rgba(192,57,43,.1);color:var(--error)}
+
+.paper{background:var(--paper);color:var(--paper-text);border:1px solid var(--paper-border);border-radius:3px;box-shadow:var(--shadow);width:100%;max-width:640px;padding:36px 40px;font-size:12px;line-height:1.6}
+.paper .q-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--primary)}
+.paper .q-company{font-size:16px;font-weight:700;color:var(--primary)}
+.paper .q-company small{display:block;font-size:11px;font-weight:400;color:var(--text-sec);margin-top:2px}
+.paper .q-title{font-size:20px;font-weight:700;color:var(--primary);text-align:right}
+.paper .q-meta{display:flex;justify-content:space-between;margin-bottom:14px;font-size:12px;color:var(--text-sec)}
+.paper table{width:100%;border-collapse:collapse;margin-bottom:12px;font-variant-numeric:tabular-nums}
+.paper th{background:var(--primary);color:#fff;padding:6px 8px;font-size:11px;font-weight:600;text-align:center}
+.paper td{padding:6px 8px;border:1px solid var(--border);text-align:center;font-size:12px}
+.paper tr.hl td{background:var(--highlight-row);font-weight:600}
+.paper .q-section{margin-bottom:10px}
+.paper .q-section-title{font-size:11px;font-weight:700;color:var(--primary);margin-bottom:4px;text-align:center;padding:4px;background:var(--tag-bg);border-radius:3px}
+.paper .q-section-body{font-size:11px;color:var(--text-sec);padding:4px 8px}
+.paper .q-section-body p{margin:2px 0}
+.paper .q-terms{font-size:10px;color:var(--text-sec);border-top:1px solid var(--border-lt);padding-top:8px;margin-top:12px}
+.paper .q-terms ol{margin:4px 0;padding-left:18px}
+.paper .q-terms li{margin-bottom:2px}
+.paper .q-footer{margin-top:12px;padding-top:8px;border-top:1px solid var(--border-lt);font-size:11px;color:var(--text-sec);text-align:right}
+.paper .q-tax{font-size:11px;text-align:right;padding:4px 8px;color:var(--text-sec);margin-bottom:8px}
+
+.empty-preview{color:var(--text-sec);text-align:center;padding:80px 20px;font-size:14px}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--surface);border-radius:8px;padding:24px;max-width:520px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.modal h3{margin:0 0 12px;font-size:15px;color:var(--primary)}
+.modal pre{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:12px;font-size:12px;white-space:pre-wrap;word-break:break-all;max-height:240px;overflow-y:auto;margin-bottom:12px;font-family:'Noto Sans TC',monospace;color:var(--text)}
+.modal .modal-actions{display:flex;gap:8px;justify-content:flex-end}
+.modal .hint{font-size:11px;color:var(--text-sec);margin:0 0 12px}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>Insight Software</h1>
+  <span class="badge">雲端報價系統</span>
+</div>
+
+<div class="layout">
+  <div class="form-panel" id="formPanel">
+    <fieldset>
+      <legend>客戶資訊</legend>
+      <div style="margin-bottom:8px">
+        <label for="client">客戶名稱 *</label>
+        <input id="client" placeholder="例：ABC 科技有限公司">
+      </div>
+      <div class="row">
+        <div><label for="contact">聯絡人</label><input id="contact" placeholder="選填"></div>
+        <div><label for="phone">電話</label><input id="phone" placeholder="選填"></div>
+      </div>
+      <div style="margin-top:8px">
+        <label for="quoteDate">報價日期</label>
+        <input id="quoteDate" type="date">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>服務品項</legend>
+      <div id="itemsList"></div>
+      <button class="btn btn-outline btn-sm add-item-btn" onclick="addItem()">+ 新增品項</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>其他設定</legend>
+      <div style="margin-bottom:8px">
+        <label for="taxLabel">稅務行</label>
+        <input id="taxLabel" value="營業稅（5%）">
+      </div>
+      <div style="margin-bottom:8px">
+        <label for="notes">備註事項（押金、預儲款等）</label>
+        <textarea id="notes" placeholder="選填，每行一項"></textarea>
+      </div>
+      <div>
+        <label for="suppLines">補充說明</label>
+        <textarea id="suppLines" rows="4" placeholder="會依品項自動帶入，可手動修改"></textarea>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="downloadQuote()">下載報價單</button>
+      <button class="btn btn-accent" onclick="showAsanaModal()">複製 Asana 任務</button>
+    </div>
+    <div id="status" style="display:none"></div>
+  </div>
+
+  <div class="preview-panel">
+    <div id="preview"></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="asanaModal">
+  <div class="modal">
+    <h3>Asana 任務資訊</h3>
+    <p class="hint">複製後到 Asana 專案中新增任務，貼上即可。</p>
+    <label style="font-size:12px;margin-bottom:2px">任務名稱</label>
+    <pre id="asanaName"></pre>
+    <label style="font-size:12px;margin-bottom:2px">任務描述</label>
+    <pre id="asanaNotes"></pre>
+    <p class="hint">專案：雲端報價單（ID 1205579410756702）｜到期日：報價當天</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeAsanaModal()">關閉</button>
+      <button class="btn btn-outline" onclick="copyField('asanaName')">複製名稱</button>
+      <button class="btn btn-primary" onclick="copyField('asanaNotes')">複製描述</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var SERVICES = [
+  {name:'AWS',platform:'Amazon Web Services (AWS)'},
+  {name:'GCP',platform:'Google Cloud Platform (GCP)'},
+  {name:'騰訊雲',platform:'Tencent Cloud（騰訊雲）'},
+  {name:'Azure',platform:'Microsoft Azure'},
+  {name:'GA 全球加速服務',platform:'Global Accelerator（GA 全球加速服務）'}
+];
+
+var TERMS = [
+  '「服務項目」中所載明之服務內容與價格，將由雙方另行議定。',
+  '本報價單內容為本公司商業機密，雙方均負保密義務，並應遵守中華民國法律及本公司合約規範。',
+  '本報價單有效期限為 7 日，逾期需重新確認報價。',
+  '專業服務項目與付款條件等細節，均以正式合約文件內容為準執行。',
+  '本報價單經客戶用印回傳後，即視為正式訂單成立。'
+];
+
+var items = [];
+document.getElementById('quoteDate').value = new Date().toISOString().slice(0,10);
+
+function addItem(){
+  items.push({id:Date.now()+Math.random(), name:'AWS', priceDesc:'牌價', quantity:'-', discount:'', highlight:items.length===0});
+  renderItems(); updateSuppLines(); renderPreview();
+}
+
+function removeItem(id){
+  items = items.filter(function(i){return i.id!==id});
+  renderItems(); updateSuppLines(); renderPreview();
+}
+
+function renderItems(){
+  var el = document.getElementById('itemsList');
+  el.innerHTML = '';
+  items.forEach(function(item,idx){
+    var isCustom = SERVICES.every(function(s){return s.name!==item.name});
+    var card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML =
+      '<div class="item-header">' +
+        '<span class="item-num">'+(idx+1)+'</span>' +
+        '<select class="item-name-select" data-field="name" data-id="'+item.id+'" onchange="handleItemChange(this)">' +
+          SERVICES.map(function(s){return '<option value="'+s.name+'"'+(item.name===s.name?' selected':'')+'>'+s.name+'</option>'}).join('') +
+          '<option value="__custom"'+(isCustom?' selected':'')+'>自訂...</option>' +
+        '</select>' +
+        (items.length>1?'<button class="remove-btn" onclick="removeItem('+item.id+')" title="移除">&times;</button>':'') +
+      '</div>' +
+      (isCustom?'<div style="margin-bottom:6px"><input placeholder="自訂品項名稱" value="'+esc(item.name)+'" data-field="customName" data-id="'+item.id+'" onchange="handleItemChange(this)"></div>':'') +
+      '<div class="item-fields">' +
+        '<div><label>單價說明</label><input value="'+esc(item.priceDesc)+'" data-field="priceDesc" data-id="'+item.id+'" onchange="handleItemChange(this)"></div>' +
+        '<div><label>數量</label><input value="'+esc(item.quantity)+'" data-field="quantity" data-id="'+item.id+'" onchange="handleItemChange(this)"></div>' +
+        '<div><label>折扣/加成</label><input value="'+esc(item.discount)+'" data-field="discount" data-id="'+item.id+'" placeholder="例：85折" onchange="handleItemChange(this)"></div>' +
+      '</div>' +
+      '<label class="highlight-check"><input type="checkbox" '+(item.highlight?'checked':'')+' data-field="highlight" data-id="'+item.id+'" onchange="handleItemChange(this)"> 主要項目（高亮顯示）</label>';
+    el.appendChild(card);
+  });
+}
+
+function handleItemChange(el){
+  var id = parseFloat(el.dataset.id);
+  var item = items.find(function(i){return i.id===id});
+  if(!item) return;
+  var f = el.dataset.field;
+  if(f==='name'){
+    item.name = el.value==='__custom' ? '' : el.value;
+    renderItems(); updateSuppLines();
+  } else if(f==='customName'){ item.name=el.value;
+  } else if(f==='highlight'){ item.highlight=el.checked;
+  } else { item[f]=el.value; }
+  renderPreview();
+}
+
+function updateSuppLines(){
+  var platforms = items.map(function(i){
+    var svc = SERVICES.find(function(s){return s.name===i.name});
+    return svc ? svc.platform : i.name;
+  }).filter(Boolean);
+  var unique = platforms.filter(function(v,i,a){return a.indexOf(v)===i});
+  var lines = [];
+  if(unique.length) lines.push('適用平台：'+unique.join('、'));
+  lines.push('本報價為預估價格，實際費用依使用量結算');
+  lines.push('報價幣別：新台幣（NTD）');
+  document.getElementById('suppLines').value = lines.join('\n');
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function getFormData(){
+  var d = document.getElementById('quoteDate').value;
+  var parts = d.split('-');
+  return {
+    client: document.getElementById('client').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    date: parts.length===3 ? parts[0]+' / '+parts[1]+' / '+parts[2] : '',
+    dateISO: d,
+    items: items,
+    taxLabel: document.getElementById('taxLabel').value.trim(),
+    notes: document.getElementById('notes').value.trim().split('\n').filter(Boolean),
+    suppLines: document.getElementById('suppLines').value.trim().split('\n').filter(Boolean)
+  };
+}
+
+function renderPreview(){
+  var data = getFormData();
+  if(!data.client && items.length===0){
+    document.getElementById('preview').innerHTML = '<div class="empty-preview">填入客戶名稱並新增品項後<br>即可預覽報價單</div>';
+    return;
+  }
+  document.getElementById('preview').innerHTML = buildQuoteHTML(data, false);
+}
+
+function buildQuoteHTML(data, standalone){
+  var notesHtml = data.notes.length
+    ? '<div class="q-section"><div class="q-section-title">備註說明</div><div class="q-section-body">'+data.notes.map(function(n){return '<p>'+escHtml(n)+'</p>'}).join('')+'</div></div>' : '';
+  var suppHtml = data.suppLines.length
+    ? '<div class="q-section"><div class="q-section-title">補充說明</div><div class="q-section-body">'+data.suppLines.map(function(n){return '<p>'+escHtml(n)+'</p>'}).join('')+'</div></div>' : '';
+
+  var tableRows = data.items.map(function(item,i){
+    var cls = item.highlight ? ' class="hl"' : '';
+    return '<tr'+cls+'><td>'+(i+1)+'</td><td style="text-align:left">'+escHtml(item.name)+'</td><td>'+escHtml(item.priceDesc)+'</td><td>'+escHtml(item.quantity)+'</td><td>'+escHtml(item.discount||'—')+'</td></tr>';
+  }).join('');
+
+  var contactParts = [];
+  if(data.contact) contactParts.push('聯絡人：'+escHtml(data.contact));
+  if(data.phone) contactParts.push('電話：'+escHtml(data.phone));
+  var contactLine = contactParts.length ? '　　'+contactParts.join('　　') : '';
+
+  var inner =
+    '<div class="q-header">' +
+      '<div class="q-company">Insight Software<small>雲端技術服務</small></div>' +
+      '<div class="q-title">報 價 單</div>' +
+    '</div>' +
+    '<div class="q-meta">' +
+      '<div>客戶：<strong>'+escHtml(data.client||'—')+'</strong>'+contactLine+'</div>' +
+      '<div>日期：'+escHtml(data.date)+'</div>' +
+    '</div>' +
+    '<table>' +
+      '<thead><tr><th style="width:40px">項次</th><th>服務項目</th><th style="width:80px">單價說明</th><th style="width:50px">數量</th><th style="width:80px">折扣/加成</th></tr></thead>' +
+      '<tbody>'+(tableRows||'<tr><td colspan="5" style="color:#999">尚未新增品項</td></tr>')+'</tbody>' +
+    '</table>' +
+    '<div class="q-tax">'+escHtml(data.taxLabel)+'</div>' +
+    notesHtml + suppHtml +
+    '<div class="q-terms"><strong>條款及細則</strong><ol>'+TERMS.map(function(t){return '<li>'+escHtml(t)+'</li>'}).join('')+'</ol></div>' +
+    '<div class="q-footer">Insight Software｜雲端技術服務</div>';
+
+  if(!standalone) return '<div class="paper">'+inner+'</div>';
+
+  var itemName = data.items.map(function(i){return i.name}).join('_');
+  return '<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>報價單_'+escHtml(data.client)+'_'+escHtml(itemName)+'</title>' +
+    '<style>' +
+    "@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap');" +
+    '*{box-sizing:border-box;margin:0;padding:0}' +
+    "body{font-family:'Noto Sans TC',sans-serif;color:#1C2833;line-height:1.6;background:#fff}" +
+    '@page{size:A4;margin:15mm 18mm}' +
+    '@media print{body{padding:0}.paper{border:none;box-shadow:none;padding:0;max-width:none}}' +
+    '.paper{max-width:680px;margin:20px auto;padding:36px 44px;font-size:12px}' +
+    '.q-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2.5px solid #1B4F72}' +
+    '.q-company{font-size:17px;font-weight:700;color:#1B4F72}' +
+    '.q-company small{display:block;font-size:11px;font-weight:400;color:#5D6D7E;margin-top:2px}' +
+    '.q-title{font-size:22px;font-weight:700;color:#1B4F72}' +
+    '.q-meta{display:flex;justify-content:space-between;margin-bottom:14px;font-size:12px;color:#5D6D7E}' +
+    'table{width:100%;border-collapse:collapse;margin-bottom:12px;font-variant-numeric:tabular-nums}' +
+    'th{background:#1B4F72;color:#fff;padding:7px 8px;font-size:11px;font-weight:600;text-align:center}' +
+    'td{padding:6px 8px;border:1px solid #BDC3C7;text-align:center;font-size:12px}' +
+    'tr.hl td{background:#FDF6E3;font-weight:600}' +
+    '.q-section{margin-bottom:10px}' +
+    '.q-section-title{font-size:11px;font-weight:700;color:#1B4F72;margin-bottom:4px;text-align:center;padding:4px;background:#EBF5FB;border-radius:3px}' +
+    '.q-section-body{font-size:11px;color:#5D6D7E;padding:4px 8px}' +
+    '.q-section-body p{margin:2px 0}' +
+    '.q-tax{font-size:11px;text-align:right;padding:4px 8px;color:#5D6D7E;margin-bottom:8px}' +
+    '.q-terms{font-size:10px;color:#5D6D7E;border-top:1px solid #EAECEE;padding-top:8px;margin-top:12px}' +
+    '.q-terms ol{margin:4px 0;padding-left:18px}' +
+    '.q-terms li{margin-bottom:2px}' +
+    '.q-footer{margin-top:12px;padding-top:8px;border-top:1px solid #EAECEE;font-size:11px;color:#5D6D7E;text-align:right}' +
+    '</style></head><body><div class="paper">'+inner+'</div></body></html>';
+}
+
+addItem();
+document.getElementById('formPanel').addEventListener('input', renderPreview);
+
+function showStatus(msg, ok){
+  var el = document.getElementById('status');
+  el.style.display = 'block';
+  el.className = 'status ' + (ok?'ok':'err');
+  el.textContent = msg;
+  if(ok) setTimeout(function(){el.style.display='none'}, 5000);
+}
+
+function downloadQuote(){
+  var data = getFormData();
+  if(!data.client){showStatus('請填寫客戶名稱','');return}
+  if(!data.items.length){showStatus('請至少新增一項品項','');return}
+
+  var html = buildQuoteHTML(data, true);
+  var itemName = data.items.map(function(i){return i.name}).join('_');
+  var dateStr = data.dateISO.replace(/-/g,'');
+  var filename = '報價單_'+data.client+'_'+itemName+'_'+dateStr+'.html';
+
+  var blob = new Blob([html],{type:'text/html;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  showStatus('報價單已下載 — 用瀏覽器開啟後按 Ctrl+P 列印為 PDF',true);
+}
+
+function showAsanaModal(){
+  var data = getFormData();
+  if(!data.client){showStatus('請填寫客戶名稱','');return}
+  if(!data.items.length){showStatus('請至少新增一項品項','');return}
+
+  var itemNames = data.items.map(function(i){return i.name}).join('、');
+  var discounts = data.items.map(function(i){return i.discount||'牌價'}).join('、');
+  var name = '報價單 — '+data.client+'｜'+itemNames+' '+discounts;
+
+  var notes = '客戶：'+data.client+'\n品項：'+itemNames+'\n項目合計：'+discounts+'\n日期：'+data.dateISO;
+  if(data.notes.length) notes += '\n\n備註：\n'+data.notes.join('\n');
+  var fileName = '報價單_'+data.client+'_'+data.items.map(function(i){return i.name}).join('_')+'_'+data.dateISO.replace(/-/g,'')+'.html';
+  notes += '\n\n報價文件：'+fileName;
+
+  document.getElementById('asanaName').textContent = name;
+  document.getElementById('asanaNotes').textContent = notes;
+  document.getElementById('asanaModal').classList.remove('hidden');
+}
+
+function closeAsanaModal(){
+  document.getElementById('asanaModal').classList.add('hidden');
+}
+
+function copyField(elId){
+  var text = document.getElementById(elId).textContent;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      showStatus('已複製到剪貼簿',true);
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showStatus('已複製到剪貼簿',true);
+  }
+}
+
+document.getElementById('asanaModal').addEventListener('click',function(e){
+  if(e.target===this) closeAsanaModal();
+});
+</script>
+</body>
+</html>
