@@ -262,6 +262,36 @@ tbody tr:hover{background:var(--highlight-row)}
   <button class="filter-btn" data-filter="gemini" onclick="filterRows('gemini')">Google</button>
 </div>
 
+<h2 class="section-title">按維度比較：誰最強？</h2>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>比較維度</th><th>OpenAI (ChatGPT)</th><th>Anthropic (Claude)</th><th>Google (Gemini)</th><th>👑 優勢</th></tr></thead>
+<tbody>
+  <tr class="winner-claude"><td><strong>無廣告體驗</strong></td><td class="feat-limited">Free / Go 含廣告<br>Plus 起才無廣告</td><td class="feat-yes"><span class="crown">👑</span>全方案無廣告</td><td class="feat-limited">Free / AI Plus 含廣告<br>AI Pro 起才無廣告</td><td><span class="winner-label claude">Claude</span><br><small>唯一全面無廣告</small></td></tr>
+  <tr class="winner-claude"><td><strong>上下文長度</strong></td><td>標準～128K</td><td class="feat-yes"><span class="crown">👑</span><strong>200K</strong>（Pro 起）</td><td>標準～128K</td><td><span class="winner-label claude">Claude</span><br><small>200K 業界最長</small></td></tr>
+  <tr class="winner-claude"><td><strong>程式開發工具</strong></td><td>Code Interpreter<br>Agent 模式</td><td class="feat-yes"><span class="crown">👑</span><strong>Claude Code 終端</strong><br>MCP 連接器、程式執行</td><td>Gemini Code Assist</td><td><span class="winner-label claude">Claude</span><br><small>Claude Code 最完整</small></td></tr>
+  <tr class="winner-openai"><td><strong>生態系 / 外掛</strong></td><td class="feat-yes"><span class="crown">👑</span><strong>GPT Store</strong><br>自訂 GPTs、Agent</td><td>Projects、MCP</td><td>Workspace 整合</td><td><span class="winner-label openai">OpenAI</span><br><small>GPTs 生態系最成熟</small></td></tr>
+  <tr class="winner-gemini"><td><strong>辦公套件整合</strong></td><td>無原生整合</td><td>Google Workspace 整合</td><td class="feat-yes"><span class="crown">👑</span><strong>Gmail / Docs / Drive</strong><br>深度原生整合</td><td><span class="winner-label gemini">Google</span><br><small>Workspace 整合最深</small></td></tr>
+  <tr class="winner-gemini"><td><strong>影片 / 多媒體</strong></td><td>圖片生成（DALL-E）</td><td>無</td><td class="feat-yes"><span class="crown">👑</span><strong>Veo 3.1 影片生成</strong><br>Flow Credits</td><td><span class="winner-label gemini">Google</span><br><small>唯一含影片生成</small></td></tr>
+  <tr class="winner-gemini"><td><strong>附贈儲存空間</strong></td><td>4GB（Go 起）</td><td>無</td><td class="feat-yes"><span class="crown">👑</span><strong>400GB～2TB</strong></td><td><span class="winner-label gemini">Google</span><br><small>儲存空間遠超對手</small></td></tr>
+  <tr class="winner-openai"><td><strong>獨占旗艦模型</strong></td><td class="feat-yes"><span class="crown">👑</span><strong>GPT-5.5 Pro</strong><br>$200 方案獨占</td><td>全模型各方案共享</td><td>全模型各方案共享</td><td><span class="winner-label openai">OpenAI</span><br><small>$200 有獨占模型</small></td></tr>
+  <tr class="winner-openai"><td><strong>Deep Research</strong></td><td class="feat-yes"><span class="crown">👑</span><strong>250 次/月</strong>（$200）</td><td>延伸推理模型</td><td>Deep Research（Pro 起）</td><td><span class="winner-label openai">OpenAI</span><br><small>次數最多最明確</small></td></tr>
+  <tr class="winner-gemini"><td><strong>最低入門價</strong></td><td>$8（Go，含廣告）</td><td>$20（Pro）</td><td class="feat-yes"><span class="crown">👑</span><strong>$4.99</strong>（AI Plus）</td><td><span class="winner-label gemini">Google</span><br><small>$4.99 最低價</small></td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 class="section-title">完整方案明細</h2>
+
+<div class="filter-bar">
+  <span style="font-size:12px;color:var(--text-sec)">篩選供應商：</span>
+  <button class="filter-btn active" data-filter="all" onclick="filterRows('all')">全部</button>
+  <button class="filter-btn" data-filter="openai" onclick="filterRows('openai')">OpenAI</button>
+  <button class="filter-btn" data-filter="claude" onclick="filterRows('claude')">Claude</button>
+  <button class="filter-btn" data-filter="gemini" onclick="filterRows('gemini')">Google</button>
+</div>
+
 <div class="table-wrap">
 <table id="consumer-table">
 <thead>
@@ -283,13 +313,11 @@ tbody tr:hover{background:var(--highlight-row)}
   <tr data-provider="openai"><td><span class="provider-badge openai">OpenAI</span></td><td><strong>Plus</strong></td><td class="price-cell">$20</td><td>GPT-5.x 全系列</td><td>標準</td><td>標準</td><td>Agent 模式、Deep Research、圖片生成、語音</td><td class="feat-yes">無</td></tr>
   <tr data-provider="openai"><td><span class="provider-badge openai">OpenAI</span></td><td><strong>Pro</strong></td><td class="price-cell">$100</td><td>GPT-5.x 全系列</td><td>5x Plus</td><td>擴展</td><td>優先運算</td><td class="feat-yes">無</td></tr>
   <tr data-provider="openai"><td><span class="provider-badge openai">OpenAI</span></td><td><strong>Pro (旗艦)</strong></td><td class="price-cell">$200</td><td>GPT-5.5 Pro 獨占</td><td>20x Plus</td><td>128K (~250頁)</td><td>250 次 Deep Research、最高優先</td><td class="feat-yes">無</td></tr>
-
   <!-- Claude -->
   <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Free</strong></td><td class="price-cell">$0</td><td>基本模型</td><td>每日限額</td><td>標準</td><td>Web / iOS / Android / 桌面、搜尋</td><td class="feat-yes">無</td></tr>
-  <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Pro</strong></td><td class="price-cell">$20</td><td>全模型（Fable / Opus / Sonnet）</td><td>標準</td><td>200K</td><td>Claude Code、檔案建立、程式執行、Google Workspace 整合、延伸推理</td><td class="feat-yes">無</td></tr>
-  <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Max 5x</strong></td><td class="price-cell">$100</td><td>全模型</td><td>5x / 5hr</td><td>200K</td><td>更高輸出限制、尖峰優先、搶先體驗</td><td class="feat-yes">無</td></tr>
-  <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Max 20x</strong></td><td class="price-cell">$200</td><td>全模型</td><td>20x / 5hr (~900則)</td><td>200K</td><td>最高優先權、所有 Max 5x 功能</td><td class="feat-yes">無</td></tr>
-
+  <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Pro</strong></td><td class="price-cell">$20</td><td>全模型（Fable / Opus / Sonnet）</td><td>標準</td><td><strong>200K</strong></td><td>Claude Code、檔案建立、程式執行、Google Workspace 整合、延伸推理</td><td class="feat-yes">無</td></tr>
+  <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Max 5x</strong></td><td class="price-cell">$100</td><td>全模型</td><td>5x / 5hr</td><td><strong>200K</strong></td><td>更高輸出限制、尖峰優先、搶先體驗</td><td class="feat-yes">無</td></tr>
+  <tr data-provider="claude"><td><span class="provider-badge claude">Claude</span></td><td><strong>Max 20x</strong></td><td class="price-cell">$200</td><td>全模型</td><td>20x / 5hr (~900則)</td><td><strong>200K</strong></td><td>最高優先權、所有 Max 5x 功能</td><td class="feat-yes">無</td></tr>
   <!-- Gemini -->
   <tr data-provider="gemini"><td><span class="provider-badge gemini">Google</span></td><td><strong>Free</strong></td><td class="price-cell">$0</td><td>基本模型</td><td>有限</td><td>標準</td><td>Gemini App</td><td class="feat-yes">無</td></tr>
   <tr data-provider="gemini"><td><span class="provider-badge gemini">Google</span></td><td><strong>AI Plus</strong></td><td class="price-cell">$4.99</td><td>進階模型</td><td>2x Free</td><td>128K</td><td>NotebookLM、Daily Brief、影片生成、400GB 儲存</td><td class="feat-limited">有</td></tr>
@@ -305,7 +333,23 @@ tbody tr:hover{background:var(--highlight-row)}
 <!-- ========== TAB: Team / Enterprise ========== -->
 <div id="panel-team" class="panel">
 
-<h2 class="section-title">團隊 / 企業方案比較</h2>
+<h2 class="section-title">團隊 / 企業維度比較：誰最強？</h2>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>比較維度</th><th>OpenAI</th><th>Claude</th><th>Google</th><th>👑 優勢</th></tr></thead>
+<tbody>
+  <tr class="winner-gemini"><td><strong>最低團隊入門價</strong></td><td>$20/人（Business Standard）</td><td>$25/人（Team Standard）</td><td class="feat-yes"><span class="crown">👑</span><strong>$7/人</strong>（Workspace Starter）</td><td><span class="winner-label gemini">Google</span><br><small>$7 起，業界最低</small></td></tr>
+  <tr class="winner-openai"><td><strong>同價位功能（~$20/人）</strong></td><td class="feat-yes"><span class="crown">👑</span><strong>$20/人</strong><br>管理主控台、SOC 2</td><td>$25/人<br>共享工作區</td><td>$14/人（Standard）<br>完整 Gemini</td><td><span class="winner-label openai">OpenAI</span><br><small>$20 功能最完整</small></td></tr>
+  <tr class="winner-claude"><td><strong>開發團隊方案</strong></td><td>無專屬開發方案</td><td class="feat-yes"><span class="crown">👑</span><strong>Team Premium $150/人</strong><br>內建 Claude Code 環境</td><td>無專屬開發方案</td><td><span class="winner-label claude">Claude</span><br><small>唯一含開發環境</small></td></tr>
+  <tr class="winner-gemini"><td><strong>辦公整合度</strong></td><td>獨立平台</td><td>Google Workspace 整合</td><td class="feat-yes"><span class="crown">👑</span><strong>原生整合</strong><br>Gmail / Docs / Drive / Meet</td><td><span class="winner-label gemini">Google</span><br><small>無需加購、原生內建</small></td></tr>
+  <tr class="winner-tie"><td><strong>企業安全合規</strong></td><td>SSO / SCIM<br>自訂資料保留</td><td>SSO、管理分析<br>自訂資料保留</td><td>進階安全<br>DLP、Vault</td><td><small>三家均有完整企業安全功能</small></td></tr>
+  <tr class="winner-claude"><td><strong>彈性計費</strong></td><td>固定席位</td><td class="feat-yes"><span class="crown">👑</span><strong>$20/席 + API 用量</strong><br>Self-serve Enterprise</td><td>固定席位</td><td><span class="winner-label claude">Claude</span><br><small>唯一按量計費選項</small></td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 class="section-title">完整方案明細</h2>
 
 <div class="table-wrap team-table-wrap">
 <table class="team-table">
@@ -317,33 +361,15 @@ tbody tr:hover{background:var(--highlight-row)}
   <tr><td><span class="provider-badge openai">OpenAI</span></td><td><strong>Business Premium</strong></td><td class="price-cell">$100 / 人</td><td>年付（月付 $125）</td><td>5x Standard 用量、無五小時速率限制</td></tr>
   <tr><td><span class="provider-badge openai">OpenAI</span></td><td><strong>Enterprise</strong></td><td class="price-cell">客製報價</td><td>—</td><td>SSO / SCIM、自訂資料保留、專屬支援、無限用量</td></tr>
   <tr style="border-top:3px solid var(--border)"><td><span class="provider-badge claude">Claude</span></td><td><strong>Team Standard</strong></td><td class="price-cell">$25 / 人</td><td>年付（月付 $30）</td><td>共享工作區、管理控制、資料不用於訓練</td></tr>
-  <tr><td><span class="provider-badge claude">Claude</span></td><td><strong>Team Premium</strong></td><td class="price-cell">$150 / 人</td><td>年付</td><td>含 Claude Code 開發環境、更高用量</td></tr>
+  <tr class="winner-claude"><td><span class="provider-badge claude">Claude</span></td><td><span class="crown">👑</span><strong>Team Premium</strong></td><td class="price-cell">$150 / 人</td><td>年付</td><td><strong>含 Claude Code 開發環境</strong>、更高用量</td></tr>
   <tr><td><span class="provider-badge claude">Claude</span></td><td><strong>Enterprise (Self-serve)</strong></td><td class="price-cell">$20/席 + API</td><td>按量計費</td><td>SSO、管理分析、自訂資料保留</td></tr>
   <tr><td><span class="provider-badge claude">Claude</span></td><td><strong>Enterprise (Custom)</strong></td><td class="price-cell">客製報價</td><td>—</td><td>專屬支援、自訂整合、批量折扣</td></tr>
-  <tr style="border-top:3px solid var(--border)"><td><span class="provider-badge gemini">Google</span></td><td><strong>Workspace Starter</strong></td><td class="price-cell">$7 / 人</td><td>月付</td><td>有限 Gemini 存取（已內建）</td></tr>
+  <tr style="border-top:3px solid var(--border)" class="winner-gemini"><td><span class="provider-badge gemini">Google</span></td><td><span class="crown">👑</span><strong>Workspace Starter</strong></td><td class="price-cell">$7 / 人</td><td>月付</td><td>有限 Gemini 存取（已內建）<strong>— 最低入門價</strong></td></tr>
   <tr><td><span class="provider-badge gemini">Google</span></td><td><strong>Workspace Standard</strong></td><td class="price-cell">$14 / 人</td><td>月付</td><td>完整 Gemini（無需加購）</td></tr>
   <tr><td><span class="provider-badge gemini">Google</span></td><td><strong>Workspace Plus</strong></td><td class="price-cell">$18 / 人</td><td>月付</td><td>完整 Gemini + 進階功能</td></tr>
   <tr><td><span class="provider-badge gemini">Google</span></td><td><strong>Workspace Enterprise</strong></td><td class="price-cell">客製報價</td><td>—</td><td>完整 Gemini + 進階安全</td></tr>
 </tbody>
 </table>
-</div>
-
-<div class="insights-grid">
-  <div class="insight-card">
-    <div class="insight-icon">💰</div>
-    <h4>團隊方案最低入門價</h4>
-    <p><strong>Google Workspace Starter $7/人</strong>已內建基本 Gemini，是最低價的團隊入門方案。OpenAI 和 Claude 的團隊方案起步價分別為 $20 和 $25/人。</p>
-  </div>
-  <div class="insight-card">
-    <div class="insight-icon">🔧</div>
-    <h4>開發者團隊首選</h4>
-    <p><strong>Claude Team Premium $150/人</strong>是唯一在團隊方案中內建完整 Claude Code 開發環境的選項，對開發團隊來說最具價值。</p>
-  </div>
-  <div class="insight-card">
-    <div class="insight-icon">🏢</div>
-    <h4>企業級整合</h4>
-    <p>三家均提供 Enterprise 客製方案，但 <strong>Google 的優勢</strong>在於 Workspace 生態系（Gmail、Docs、Drive）整合度最高，無需額外費用。</p>
-  </div>
 </div>
 
 </div><!-- panel-team -->
@@ -404,6 +430,23 @@ tbody tr:hover{background:var(--highlight-row)}
 
 </div>
 
+<h2 class="section-title">API 維度比較：誰最強？</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>比較維度</th><th><span class="provider-badge openai">OpenAI</span></th><th><span class="provider-badge claude">Claude</span></th><th><span class="provider-badge gemini">Google</span></th><th>結論</th></tr></thead>
+<tbody>
+  <tr class="winner-gemini"><td><strong>最便宜模型</strong></td><td>GPT-5.6 Luna<br>$0.20 / $1.20</td><td>Haiku 4.5<br>$1.00 / $5.00</td><td class="feat-yes"><span class="crown">👑</span><strong>3.8 Flash（促銷）</strong><br>$0.75 / $3.75</td><td><span class="winner-label gemini">Google</span><br><small>促銷價最低；常規最低為 OpenAI Luna</small></td></tr>
+  <tr class="winner-openai"><td><strong>常規最低價模型</strong></td><td class="feat-yes"><span class="crown">👑</span><strong>GPT-5.6 Luna</strong><br>$0.20 / $1.20</td><td>Haiku 4.5<br>$1.00 / $5.00</td><td>3.6 Flash<br>$1.50 / $7.50</td><td><span class="winner-label openai">OpenAI</span><br><small>Luna $0.20 輸入最便宜</small></td></tr>
+  <tr class="winner-claude"><td><strong>旗艦模型性價比</strong></td><td>GPT-6 Astra<br>$10 / $50</td><td class="feat-yes"><span class="crown">👑</span><strong>Opus 5</strong><br>$5 / $25</td><td>3.1 Pro<br>$2~4 / $12~18</td><td><span class="winner-label claude">Claude</span><br><small>Opus 5 旗艦級品質、價格僅 Astra 一半</small></td></tr>
+  <tr class="winner-gemini"><td><strong>中階模型</strong></td><td>GPT-5.6 Terra<br>$2 / $12</td><td>Sonnet 5<br>$3 / $15</td><td class="feat-yes"><span class="crown">👑</span><strong>3.1 Pro (&lt;200K)</strong><br>$2 / $12</td><td><span class="winner-label gemini">Google</span><br><small>同價但含更長上下文</small></td></tr>
+  <tr class="winner-tie"><td><strong>Batch API（半價）</strong></td><td class="feat-yes">✅ 支援（50% off）</td><td class="feat-yes">✅ 支援（50% off）</td><td class="feat-no">❌ 不支援</td><td><small>OpenAI 與 Claude 均支援，Google 無此選項</small></td></tr>
+  <tr class="winner-tie"><td><strong>Prompt Caching</strong></td><td class="feat-yes">✅ 支援（90% off）</td><td class="feat-yes">✅ 支援（90% off）</td><td class="feat-yes">✅ 支援</td><td><small>三家均支援，折扣幅度相近</small></td></tr>
+  <tr class="winner-openai"><td><strong>模型數量 / 選擇</strong></td><td class="feat-yes"><span class="crown">👑</span><strong>5+ 模型</strong><br>含 Legacy GPT-4o</td><td>4 模型<br>清晰分層</td><td>4 模型<br>含長上下文版</td><td><span class="winner-label openai">OpenAI</span><br><small>可選模型最多</small></td></tr>
+  <tr class="winner-gemini"><td><strong>免費 API 額度</strong></td><td class="feat-no">❌ 無免費額度</td><td class="feat-no">❌ 無免費額度</td><td class="feat-yes"><span class="crown">👑</span><strong>免費使用</strong><br>有 RPM 限制</td><td><span class="winner-label gemini">Google</span><br><small>唯一提供免費 API 額度</small></td></tr>
+</tbody>
+</table>
+</div>
+
 <h2 class="section-title">API 成本節省技巧</h2>
 <div class="insights-grid">
   <div class="insight-card">
@@ -459,16 +502,16 @@ tbody tr:hover{background:var(--highlight-row)}
 <table>
 <thead><tr><th>使用場景</th><th>推薦方案</th><th>理由</th></tr></thead>
 <tbody>
-  <tr><td><strong>預算有限的個人用戶</strong></td><td><span class="provider-badge gemini">Google AI Plus $4.99</span></td><td>最低月費、128K 上下文、含 400GB 雲端儲存</td></tr>
-  <tr><td><strong>一般辦公 / 寫作</strong></td><td><span class="provider-badge gemini">Google AI Pro $19.99</span></td><td>與 Gmail / Docs 深度整合、含 2TB 儲存、性價比最高</td></tr>
-  <tr><td><strong>軟體開發者</strong></td><td><span class="provider-badge claude">Claude Pro $20</span></td><td>Claude Code 終端、200K 上下文、延伸推理模型、程式執行</td></tr>
-  <tr><td><strong>重度 AI 使用者</strong></td><td><span class="provider-badge openai">ChatGPT Pro $200</span></td><td>GPT-5.5 Pro 獨占模型、250 次 Deep Research、最高性能</td></tr>
-  <tr><td><strong>影片 / 多媒體創作</strong></td><td><span class="provider-badge gemini">AI Ultra 5x $99.99</span></td><td>唯一含 Veo 3.1 影片生成與 10,000 Flow Credits</td></tr>
-  <tr><td><strong>開發團隊 (5-50 人)</strong></td><td><span class="provider-badge claude">Team Premium $150/人</span></td><td>唯一內建 Claude Code 開發環境的團隊方案</td></tr>
-  <tr><td><strong>企業 Workspace 整合</strong></td><td><span class="provider-badge gemini">Workspace Standard $14/人</span></td><td>Gemini 已內建、無需加購、整合度最高</td></tr>
-  <tr><td><strong>API 開發 (低成本)</strong></td><td><span class="provider-badge gemini">Gemini 3.8 Flash</span></td><td>$0.75/$3.75 促銷價，目前市場最低</td></tr>
-  <tr><td><strong>API 開發 (高品質)</strong></td><td><span class="provider-badge claude">Claude Opus 5</span></td><td>$5/$25，輸出品質 / 價格比最佳</td></tr>
-  <tr><td><strong>注重隱私 / 無廣告</strong></td><td><span class="provider-badge claude">Claude（任何方案）</span></td><td>唯一全面無廣告平台、$20 起步即無廣告</td></tr>
+  <tr class="winner-gemini"><td><strong>預算有限的個人用戶</strong></td><td><span class="crown">👑</span><span class="provider-badge gemini">Google AI Plus $4.99</span></td><td>最低月費、128K 上下文、含 400GB 雲端儲存</td></tr>
+  <tr class="winner-gemini"><td><strong>一般辦公 / 寫作</strong></td><td><span class="crown">👑</span><span class="provider-badge gemini">Google AI Pro $19.99</span></td><td>與 Gmail / Docs 深度整合、含 2TB 儲存、性價比最高</td></tr>
+  <tr class="winner-claude"><td><strong>軟體開發者</strong></td><td><span class="crown">👑</span><span class="provider-badge claude">Claude Pro $20</span></td><td>Claude Code 終端、200K 上下文、延伸推理模型、程式執行</td></tr>
+  <tr class="winner-openai"><td><strong>重度 AI 使用者</strong></td><td><span class="crown">👑</span><span class="provider-badge openai">ChatGPT Pro $200</span></td><td>GPT-5.5 Pro 獨占模型、250 次 Deep Research、最高性能</td></tr>
+  <tr class="winner-gemini"><td><strong>影片 / 多媒體創作</strong></td><td><span class="crown">👑</span><span class="provider-badge gemini">AI Ultra 5x $99.99</span></td><td>唯一含 Veo 3.1 影片生成與 10,000 Flow Credits</td></tr>
+  <tr class="winner-claude"><td><strong>開發團隊 (5-50 人)</strong></td><td><span class="crown">👑</span><span class="provider-badge claude">Team Premium $150/人</span></td><td>唯一內建 Claude Code 開發環境的團隊方案</td></tr>
+  <tr class="winner-gemini"><td><strong>企業 Workspace 整合</strong></td><td><span class="crown">👑</span><span class="provider-badge gemini">Workspace Standard $14/人</span></td><td>Gemini 已內建、無需加購、整合度最高</td></tr>
+  <tr class="winner-gemini"><td><strong>API 開發 (低成本)</strong></td><td><span class="crown">👑</span><span class="provider-badge gemini">Gemini 3.8 Flash</span></td><td>$0.75/$3.75 促銷價，目前市場最低</td></tr>
+  <tr class="winner-claude"><td><strong>API 開發 (高品質)</strong></td><td><span class="crown">👑</span><span class="provider-badge claude">Claude Opus 5</span></td><td>$5/$25，輸出品質 / 價格比最佳</td></tr>
+  <tr class="winner-claude"><td><strong>注重隱私 / 無廣告</strong></td><td><span class="crown">👑</span><span class="provider-badge claude">Claude（任何方案）</span></td><td>唯一全面無廣告平台、$20 起步即無廣告</td></tr>
 </tbody>
 </table>
 </div>
