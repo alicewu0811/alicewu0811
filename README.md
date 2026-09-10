@@ -28,6 +28,15 @@ A central hub linking to all project dashboards and tools.
 
 ---
 
+### AI 訂閱方案比較 Dashboard
+> GPT / Claude / Gemini 訂閱制完整對比 — 個人、團隊、企業方案 & API 定價
+
+Compare subscription plans across OpenAI (ChatGPT), Anthropic (Claude), and Google (Gemini). Covers consumer tiers, team/enterprise pricing, API costs, and strategic recommendations. Updated for 2026 Q3.
+
+**Source** &nbsp; [ai-subscription-compare/](./ai-subscription-compare/)
+
+---
+
 ### AItokenKing Management
 > AItokenKing 產品管理文件
 
